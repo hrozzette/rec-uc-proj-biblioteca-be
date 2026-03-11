@@ -25,15 +25,22 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.8.0",
+<<<<<<< HEAD
     "@types/pg": "^8.18.0",
+=======
+>>>>>>> d3192eb1373e6f36288a2e68d1e072685ade720a
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "cors": "^2.8.5",
+<<<<<<< HEAD
     "dotenv": "^17.3.1",
     "express": "^5.1.0",
     "pg": "^8.19.0"
+=======
+    "express": "^5.1.0"
+>>>>>>> d3192eb1373e6f36288a2e68d1e072685ade720a
   }
 }
