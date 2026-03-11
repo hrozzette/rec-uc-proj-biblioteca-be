@@ -1,0 +1,39 @@
+{
+  "name": "backend-biblioteca",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Heloísa Marcovecchio",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrozzette/biblioteca.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hrozzette/biblioteca/issues"
+  },
+  "homepage": "https://github.com/hrozzette/biblioteca#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.8.0",
+    "@types/pg": "^8.18.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^5.1.0",
+    "pg": "^8.19.0"
+  }
+}
