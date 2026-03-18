@@ -1,4 +1,6 @@
-<<<<<<< HEAD
+
+
+
 import { Router } from "express"; //Importa o módulo Router do express
 import type { Request, Response } from "express"; //Importa os módulos de requisição e resposta
 import AlunoController from "./Controller/AlunoController.js";
@@ -30,16 +32,3 @@ router.put("/api/emprestimos/:idEmprestimo", EmprestimoController.atualizar);
 router.delete("/api/emprestimos/:idEmprestimo", EmprestimoController.remover);
 
 export {router};
-=======
-import { Router } from "express";
-import type {Request, Response} from "express"
-
-const router = Router();
-
-router.get("/api", (req: Request, res:Response) => {
-    res.status(200).json({ mensagem:"Olá, seja bem-vindo"});
-    
-});
-
-export { router };
->>>>>>> d3192eb1373e6f36288a2e68d1e072685ade720a
