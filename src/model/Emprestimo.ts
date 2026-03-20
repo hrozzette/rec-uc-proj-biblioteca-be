@@ -205,31 +205,41 @@ class Emprestimo {
     }
 
     static async atualizarEmprestimo(emprestimo: EmprestimoDTO): Promise<boolean> {
-        try {
-            const queryUpdateEmprestimo = `UPDATE Emprestimo SET id_aluno = $1, id_livro = $2, data_emprestimo = $3, data_devolucao = $4, status_emprestimo = $5 WHERE id_emprestimo = $6;`;
+    try {
+        const queryUpdateEmprestimo = `
+        UPDATE emprestimo 
+        SET 
+            id_aluno = $1, 
+            id_livro = $2, 
+            data_emprestimo = $3, 
+            data_devolucao = $4, 
+            status_emprestimo = $5 
+        WHERE id_emprestimo = $6;
+        `;
 
-            const respostaBD = await database.query(queryUpdateEmprestimo, [
-                emprestimo.idAluno,
-                emprestimo.idEmprestimo,
-                emprestimo.dataEmprestimo,
-                emprestimo.dataDevolucao,
-                emprestimo.statusEmprestimo,
-                emprestimo.idEmprestimo
-            ]);
+        const respostaBD = await database.query(queryUpdateEmprestimo, [
+            emprestimo.idAluno,
+            emprestimo.idLivro, 
+            emprestimo.dataEmprestimo,
+            emprestimo.dataDevolucao,
+            emprestimo.statusEmprestimo,
+            emprestimo.idEmprestimo
+        ]);
 
-            if (respostaBD.rowCount != 0) {
-                console.info(`Emprestimo atualizado com sucesso. ID: ${emprestimo.idEmprestimo}`);
-                return true;
-            }
+        console.log("rowCount:", respostaBD.rowCount);
 
-            return false;
-            
-        } catch (error) {
-            console.error(`Erro na consulta ao banco de dados. ${error}`);
-            return false;
+        if (respostaBD.rowCount != 0) {
+            console.info(`Emprestimo atualizado com sucesso. ID: ${emprestimo.idEmprestimo}`);
+            return true;
         }
-    }
 
+        return false;
+        
+    } catch (error) {
+        console.error(`Erro na consulta ao banco de dados. ${error}`);
+        return false;
+    }
+}
     static async removerEmprestimo(idEmprestimo: number): Promise<boolean> {
         try {
             const queryDeleteEmprestimo = `UPDATE Emprestimo SET situacao = FALSE WHERE id_emprestimo = $1;`

@@ -19,7 +19,7 @@ class EmprestimoController extends Emprestimo {
 
     static async listarEmprestimo(req: Request, res: Response): Promise<Response> {
         try {
-            const idEmprestimo: number = parseInt(req.params.idEmprestimo as string);
+            const idEmprestimo: number = parseInt(req.params.id as string);
 
             if (isNaN(idEmprestimo) || idEmprestimo <= 0) {
                 return res.status(400).json({ mensagem: "ID inválido"});
