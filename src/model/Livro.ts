@@ -143,7 +143,7 @@ class Livro {
     static async listarLivros(): Promise<Array<Livro> | null> {
         try {
             let listaDeLivros: Array<Livro> = [];
-            const querySelectLivros = "SELECT * FROM Livro WHERE situacao=TRUE ORDER BY id_livro ASC;";
+            const querySelectLivros = "SELECT * FROM Livro ORDER BY id_livro ASC;";
             const respostaBD = await database.query(querySelectLivros);
 
             respostaBD.rows.forEach((LivroBD) => {
@@ -160,7 +160,7 @@ class Livro {
                 );
 
                 novoLivro.setIdLivro(LivroBD.id_livro);
-                novoLivro.setSituacao(LivroBD.situacao);
+               
 
                 listaDeLivros.push(novoLivro);
             });
@@ -267,7 +267,7 @@ class Livro {
 
     static async removerLivro(idLivro: number): Promise<boolean> {
         try {
-            const queryDeleteLivro = `UPDATE Livro SET situacao = FALSE WHERE id_livro = $1;`
+            const queryDeleteLivro = `DELETE FROM Livro WHERE id_livro = $1;`
 
             const respostaBD = await database.query(queryDeleteLivro, [idLivro])
 

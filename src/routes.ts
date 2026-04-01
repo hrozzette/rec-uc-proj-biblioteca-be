@@ -1,3 +1,4 @@
+
 import { Router } from "express"; //Importa o módulo Router do express
 import type { Request, Response } from "express"; //Importa os módulos de requisição e resposta
 import AlunoController from "./Controller/AlunoController.js";
