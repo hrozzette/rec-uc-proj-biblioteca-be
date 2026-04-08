@@ -10,7 +10,6 @@ class Emprestimo {
     private dataEmprestimo: Date;
     private dataDevolucao: Date;
     private statusEmprestimo: string;
-    private situacao: boolean = true;
 
     constructor(
         _idAluno: number,
@@ -31,8 +30,6 @@ class Emprestimo {
     // ============================
     static async listarEmprestimos(): Promise<Array<EmprestimoDTO>> {
         try {
-            const listaEmprestimo: Array<EmprestimoDTO> = [];
-
             const query = `
             SELECT 
                 em.id_emprestimo,
@@ -46,30 +43,27 @@ class Emprestimo {
                 em.situacao
             FROM emprestimo em
             JOIN aluno a ON em.id_aluno = a.id_aluno
-            JOIN livro l ON em.id_livro = l.id_livro;
+            JOIN livro l ON em.id_livro = l.id_livro
+            WHERE em.situacao = TRUE;
             `;
 
             const respostaBD = await database.query(query);
 
-            respostaBD.rows.forEach((e) => {
-                listaEmprestimo.push({
-                    idEmprestimo: e.id_emprestimo,
-                    idAluno: e.id_aluno,
-                    nomeAluno: e.nome,
-                    idLivro: e.id_livro,
-                    tituloLivro: e.titulo,
-                    dataEmprestimo: e.data_emprestimo,
-                    dataDevolucao: e.data_devolucao,
-                    statusEmprestimo: e.status_emprestimo,
-                    situacao: e.situacao
-                });
-            });
-
-            return listaEmprestimo;
+            return respostaBD.rows.map((e) => ({
+                idEmprestimo: e.id_emprestimo,
+                idAluno: e.id_aluno,
+                nomeAluno: e.nome,
+                idLivro: e.id_livro,
+                tituloLivro: e.titulo,
+                dataEmprestimo: e.data_emprestimo,
+                dataDevolucao: e.data_devolucao,
+                statusEmprestimo: e.status_emprestimo,
+                situacao: e.situacao
+            }));
 
         } catch (error) {
             console.error("Erro ao listar empréstimos:", error);
-            return []; // ✅ nunca null
+            return [];
         }
     }
 
@@ -92,14 +86,12 @@ class Emprestimo {
             FROM emprestimo em
             JOIN aluno a ON em.id_aluno = a.id_aluno
             JOIN livro l ON em.id_livro = l.id_livro
-            WHERE em.id_emprestimo = $1;
+            WHERE em.id_emprestimo = $1 AND em.situacao = TRUE;
             `;
 
             const respostaBD = await database.query(query, [idEmprestimo]);
 
-            if (respostaBD.rows.length === 0) {
-                return null;
-            }
+            if (respostaBD.rows.length === 0) return null;
 
             const e = respostaBD.rows[0];
 
@@ -117,7 +109,7 @@ class Emprestimo {
 
         } catch (error) {
             console.error("Erro ao buscar empréstimo:", error);
-            return null; // ✅ correto
+            return null;
         }
     }
 
@@ -128,8 +120,8 @@ class Emprestimo {
         try {
             const query = `
             INSERT INTO emprestimo 
-            (id_aluno, id_livro, data_emprestimo, data_devolucao) 
-            VALUES ($1, $2, $3, $4)
+            (id_aluno, id_livro, data_emprestimo, data_devolucao, status_emprestimo, situacao) 
+            VALUES ($1, $2, $3, $4, $5, TRUE)
             RETURNING id_emprestimo;
             `;
 
@@ -138,6 +130,7 @@ class Emprestimo {
                 emprestimo.idLivro,
                 emprestimo.dataEmprestimo,
                 emprestimo.dataDevolucao,
+                emprestimo.statusEmprestimo
             ]);
 
             return respostaBD.rows.length > 0;
@@ -161,7 +154,7 @@ class Emprestimo {
                 data_emprestimo = $3,
                 data_devolucao = $4,
                 status_emprestimo = $5
-            WHERE id_emprestimo = $6;
+            WHERE id_emprestimo = $6 AND situacao = TRUE;
             `;
 
             const respostaBD = await database.query(query, [
